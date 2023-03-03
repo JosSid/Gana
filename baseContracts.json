@@ -1,0 +1,14 @@
+{
+    "contratos" : [
+        {
+            "nombre": "testNombre",
+            "apellido1": "testApellido1",
+            "apellido2": "testApellido2",
+            "documento": "testDocumento",
+            "cp": "testCP",
+            "localidad": "testLocalidad",
+            "direccion": "testDireccion",
+            "telefono": "testTelefono"
+        }
+    ]
+}
