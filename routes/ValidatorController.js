@@ -1,6 +1,6 @@
 'use strict';
 
-const { body, validationResult } = require('express-validator');
+const { body } = require('express-validator');
 
 class ValidatorController {
   validation() {

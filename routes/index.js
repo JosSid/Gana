@@ -41,7 +41,6 @@ const init = async () => {
 
       if (errors.errors.length > 0) {
         res.status(400).json(errors.errors[0]);
-        next();
       } else {
         try {
           const collection = await db.collection('contracts');
@@ -66,7 +65,6 @@ const init = async () => {
 
       if (errors.errors.length > 0) {
         res.status(400).json(errors.errors[0]);
-        next();
       } else {
         const body = req.body;
 
