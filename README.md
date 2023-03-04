@@ -46,12 +46,14 @@ Ten en cuenta que este procedimiento resetea la base de datos dejandola solo con
 
 
 **Para arrancar la aplicación en modo producción** :
+
 Ejecuta el comando :
 ```
 npm start
 ```
 
 **Para arrancar la aplicación en modo desarrollo** :
+
 Ejecuta el comando
 ```
 npm run dev
