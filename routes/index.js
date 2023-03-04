@@ -3,6 +3,9 @@ const router = express.Router();
 const createError = require('http-errors');
 const connection = require('../lib/mongoClient');
 const fileData = require('../lib/readFile');
+const ObjectID = require('mongodb').ObjectId;
+const { validationResult } = require('express-validator');
+const ValidationController = require('./ValidatorController');
 
 const init = async () => {
   const db = await connection(); // obtenemos la conexión
@@ -29,22 +32,111 @@ const init = async () => {
     res.status(200).json(localidades);
   });
 
-  router.post('/addcontract', async function (req, res, next) {
+  const validator = new ValidationController();
+  router.post(
+    '/addcontract',
+    validator.validation(),
+    async function (req, res, next) {
+      const errors = validationResult(req);
+
+      if (errors.errors.length > 0) {
+        res.status(400).json(errors.errors[0]);
+        next();
+      } else {
+        try {
+          const collection = await db.collection('contracts');
+          const newDocument = req.body;
+          newDocument.creation = new Date().toUTCString();
+          newDocument.update = new Date().toUTCString();
+          const result = await collection.insertOne(newDocument);
+
+          res.status(200).json(newDocument);
+        } catch (error) {
+          next(error);
+        }
+      }
+    }
+  );
+
+  router.put(
+    '/modifycontract/:id',
+    validator.updateValidation(),
+    async (req, res, next) => {
+      const errors = validationResult(req);
+
+      if (errors.errors.length > 0) {
+        res.status(400).json(errors.errors[0]);
+        next();
+      } else {
+        const body = req.body;
+
+        const objectId = new ObjectID(req.params.id);
+
+        try {
+          const collection = await db.collection('contracts');
+
+          const update = await collection.findOne({ _id: objectId });
+
+          const updateBody = {
+            nombre: body.nombre ? `${body.nombre}` : `${update.nombre}`,
+            apellido1: body.apellido1
+              ? `${body.apellido1}`
+              : `${update.apellido1}`,
+            apellido2: body.apellido2
+              ? `${body.apellido2}`
+              : `${update.apellido2}`,
+            tipo_documento: body.tipo_documento
+              ? `${body.tipo_documento}`
+              : `${update.tipo_documento}`,
+            documento: body.documento
+              ? `${body.documento}`
+              : `${update.documento}`,
+            codigo_postal: body.codigo_postal
+              ? `${body.codigo_postal}`
+              : `${update.codigo_postal}`,
+            municipio_nombre: body.municipio_nombre
+              ? `${body.municipio_nombre}`
+              : `${update.municipio_nombre}`,
+            direccion: body.direccion
+              ? `${body.direccion}`
+              : `${update.direccion}`,
+            telefono: body.telefono ? `${body.telefono}` : `${update.telefono}`,
+            creation: `${update.creation}`,
+            update: new Date().toUTCString(),
+          };
+
+          const result = await collection.findOneAndReplace(
+            { _id: objectId },
+            updateBody
+          );
+
+          const data = {
+            objectId,
+            ...updateBody,
+          };
+
+          res.status(200).json(data);
+        } catch (error) {
+          next(error);
+        }
+      }
+    }
+  );
+
+  router.delete('/deletecontract/:id', async function (req, res, next) {
+    const objectId = new ObjectID(req.params.id);
+
     try {
-
       const collection = await db.collection('contracts');
-      let newDocument = req.body;
-      newDocument.creation = new Date().toUTCString();
-      newDocument.update = new Date().toUTCString();
-      let result = await collection.insertOne(newDocument);
 
-      console.log(result)
+      const deleteContract = await collection.findOneAndDelete({
+        _id: objectId,
+      });
 
-      res.status(200).json(newDocument);
+      res.status(200).json(deleteContract);
     } catch (error) {
       next(error);
     }
-
   });
 };
 

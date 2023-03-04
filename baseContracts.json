@@ -4,9 +4,10 @@
             "nombre": "testNombre",
             "apellido1": "testApellido1",
             "apellido2": "testApellido2",
+            "tipo_documento": "nif",
             "documento": "testDocumento",
-            "cp": "testCP",
-            "localidad": "testLocalidad",
+            "codigo_postal": "testCP",
+            "municipio_nombre": "testLocalidad",
             "direccion": "testDireccion",
             "telefono": "testTelefono"
         }
