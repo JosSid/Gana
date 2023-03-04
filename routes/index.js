@@ -121,6 +121,32 @@ const init = async () => {
     }
   );
 
+  router.put('/deletecontract/:id', async (req, res, next) => {
+    const body = req.body;
+
+        const objectId = new ObjectID(req.params.id);
+
+        try {
+          const collection = await db.collection('contracts');
+
+          const update = await collection.findOne({ _id: objectId });
+
+          const updateBody = {
+            ...update,
+            deleted: new Date().toUTCString()
+          }
+
+          const result = await collection.findOneAndReplace(
+            { _id: objectId },
+            updateBody    
+          );
+
+          res.status(200).json(updateBody);
+        } catch(error) {
+          next(error);
+        }
+  });
+
   router.delete('/deletecontract/:id', async function (req, res, next) {
     const objectId = new ObjectID(req.params.id);
 
