@@ -19,18 +19,32 @@ const init = async () => {
     }
   });
 
-  router.get('/getlocalidad/:cp', async function (req, res, next) {
+  router.get('/getlocalidad/:cp', function (req, res, next) {
     const cp = req.params.cp;
 
-    const localidades = [];
-
-    for (let localidad of fileData) {
-      if (localidad.codigo_postal.includes(cp)) {
-        localidades.push(localidad);
-      }
-    }
+    const localidades = fileData.filter((localidad) =>
+      localidad.codigo_postal.includes(cp)
+    );
 
     res.status(200).json(localidades);
+  });
+
+  router.post('/addcontract', async function (req, res, next) {
+    try {
+
+      const collection = await db.collection('contracts');
+      let newDocument = req.body;
+      newDocument.creation = new Date().toUTCString();
+      newDocument.update = new Date().toUTCString();
+      let result = await collection.insertOne(newDocument);
+
+      console.log(result)
+
+      res.status(200).json(newDocument);
+    } catch (error) {
+      next(error);
+    }
+
   });
 };
 
