@@ -31,7 +31,7 @@ Asegurate de que en el fichero **.env** este bien la ruta de conexión a tu base
 ### **Antes de arrancar la aplicación inicializaremos la base de datos registrando un contrato tester**
 Ejecuta el comando :
 ```
-npm init
+npm run init
 ```
 
 El script nos lanzará una pregunta a la que deberemos responder en la consola :
@@ -132,19 +132,19 @@ Ejemplo de respuesta:
 ```
 http://localhost:3001/addcontract
 ```
-Añadiremos un body en formato json en la peticion con los siguientes campos:
+Añadiremos un body en la peticion con los siguientes campos:
 
-```json
+```sh
 {   
-    "nombre": "Juan",
-	"apellido1": "Garcia",
-	"apellido2": "Garcia",
-	"documento": "00000000B",
-	"codigo_postal": "39003",
-	"municipio_nombre": "Santander",
-	"direccion": "calle principal-1",
-	"telefono": "623456875",
-	"tipo_documento": "nif",
+    nombre: "Juan",
+	apellido1: "Garcia",
+	apellido2: "Garcia",
+	documento: "00000000B",
+	codigo_postal: "39003",
+	municipio_nombre: "Santander",
+	direccion: "calle principal-1",
+	telefono: "623456875",
+	tipo_documento: "nif",
 }
         
 ```
@@ -172,7 +172,7 @@ Ejemplo de respuesta:
 
 ### Metodos PUT
 
-### **Metodo PUT para actualizar un contrato nuevo en la base de datos** :
+### **Metodo PUT para actualizar un contrato de la base de datos** :
 ```
 http://localhost:3001/modifycontract/<_id>
 ```
@@ -180,17 +180,17 @@ Añadiremos un body en formato json en la peticion con los campos que deseemos a
 
 Podremos actualizar cualquiera de los campos del siguiente ejemplo:
 
-```json
+```sh
 {   
-    "nombre": "Juan",
-	"apellido1": "Garcia",
-	"apellido2": "Garcia",
-	"documento": "00000000B",
-	"codigo_postal": "39003",
-	"municipio_nombre": "Santander",
-	"direccion": "calle principal-1",
-	"telefono": "623456875",
-	"tipo_documento": "nif",
+    nombre: "Juan",
+	apellido1: "Garcia",
+	apellido2: "Garcia",
+	documento: "00000000B",
+	codigo_postal: "39003",
+	municipio_nombre: "Santander",
+	direccion: "calle principal-1",
+	telefono: "623456875",
+	tipo_documento: "nif",
 }
         
 ```
