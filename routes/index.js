@@ -70,10 +70,10 @@ const init = async () => {
       } else {
         const body = req.body;
 
-        const id = req.params.id; 
+        const id = req.params.id;
 
         if (!ObjectID.isValid(id)) {
-          next(createError(400, 'ID no válido'));
+          return next(createError(400, 'ID no válido'));
         }
 
         const objectId = new ObjectID(req.params.id);
@@ -132,12 +132,11 @@ const init = async () => {
   router.put('/deletecontract/:id', async (req, res, next) => {
     const body = req.body;
 
-    const id = req.params.id; 
+    const id = req.params.id;
 
-        if (!ObjectID.isValid(id)) {
-          next(createError(400, 'ID no válido'));
-        }
-
+    if (!ObjectID.isValid(id)) {
+      return next(createError(400, 'ID no válido'));
+    }
 
     const objectId = new ObjectID(req.params.id);
 
@@ -163,6 +162,12 @@ const init = async () => {
   });
 
   router.delete('/deletecontract/:id', async function (req, res, next) {
+    const id = req.params.id;
+
+    if (!ObjectID.isValid(id)) {
+      return next(createError(400, 'ID no válido'));
+    }
+
     const objectId = new ObjectID(req.params.id);
 
     try {
