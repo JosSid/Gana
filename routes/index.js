@@ -15,7 +15,7 @@ const init = async () => {
   /* GET home page. */
   router.get('/listcontracts', async function (req, res, next) {
     try {
-      const response = await db.collection('contracts').find({}).toArray();
+      const response = await (await db.collection('contracts').find({}).toArray()).reverse();
       res.status(200).json({ response });
     } catch (error) {
       next(createError(500, 'Contracts are not available in this moment'));

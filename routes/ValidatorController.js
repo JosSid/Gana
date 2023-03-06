@@ -7,13 +7,14 @@ class ValidatorController {
     return [
       body('nombre')
         .exists()
-        .isAlpha()
+        .isString()
+        .isLength({min: 1})
         .withMessage('Introduzca un nombre correcto'),
       body('apellido1')
-        .isAlpha()
+        .isString()
         .withMessage('Introduzca un apellido correcto'),
       body('apellido2')
-        .isAlpha()
+        .isString()
         .withMessage('Introduzca un apellido correcto'),
       body('tipo_documento')
         .exists()
@@ -24,10 +25,11 @@ class ValidatorController {
       body('documento')
         .exists()
         .matches(/^([0-9]{8}[A-Z])|[XYZ][0-9]{7}[A-Z]$/)
-        .withMessage('Introduzca un tipo de documento correcto'),
+        .withMessage('Introduzca un número de documento correcto'),
       body('codigo_postal')
         .exists()
         .matches(/(^([0-9]{5,5})|^)$/)
+        .isLength({min:5})
         .withMessage('Introduzca un codigo postal correcto'),
       body('municipio_nombre')
         .isString()
