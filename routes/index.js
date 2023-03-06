@@ -15,7 +15,9 @@ const init = async () => {
   /* GET home page. */
   router.get('/listcontracts', async function (req, res, next) {
     try {
-      const response = await (await db.collection('contracts').find({}).toArray()).reverse();
+      const response = await (
+        await db.collection('contracts').find({}).toArray()
+      ).reverse();
       res.status(200).json({ response });
     } catch (error) {
       next(createError(500, 'Contracts are not available in this moment'));
@@ -67,6 +69,12 @@ const init = async () => {
         res.status(400).json(errors.errors[0]);
       } else {
         const body = req.body;
+
+        const id = req.params.id; 
+
+        if (!ObjectID.isValid(id)) {
+          next(createError(400, 'ID no válido'));
+        }
 
         const objectId = new ObjectID(req.params.id);
 
@@ -124,27 +132,34 @@ const init = async () => {
   router.put('/deletecontract/:id', async (req, res, next) => {
     const body = req.body;
 
-        const objectId = new ObjectID(req.params.id);
+    const id = req.params.id; 
 
-        try {
-          const collection = await db.collection('contracts');
-
-          const update = await collection.findOne({ _id: objectId });
-
-          const updateBody = {
-            ...update,
-            deleted: new Date().toUTCString()
-          }
-
-          const result = await collection.findOneAndReplace(
-            { _id: objectId },
-            updateBody    
-          );
-
-          res.status(200).json(updateBody);
-        } catch(error) {
-          next(error);
+        if (!ObjectID.isValid(id)) {
+          next(createError(400, 'ID no válido'));
         }
+
+
+    const objectId = new ObjectID(req.params.id);
+
+    try {
+      const collection = await db.collection('contracts');
+
+      const update = await collection.findOne({ _id: objectId });
+
+      const updateBody = {
+        ...update,
+        deleted: new Date().toUTCString(),
+      };
+
+      const result = await collection.findOneAndReplace(
+        { _id: objectId },
+        updateBody
+      );
+
+      res.status(200).json(updateBody);
+    } catch (error) {
+      next(error);
+    }
   });
 
   router.delete('/deletecontract/:id', async function (req, res, next) {
